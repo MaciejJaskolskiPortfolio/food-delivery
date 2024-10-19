@@ -1,0 +1,33 @@
+ 
+volumes:
+  data:
+  smtp4dev-data:
+
+networks:
+  app:
+ 
+services:
+  postgresdb:
+    container_name: PostgresDB
+    image: postgres:alpine
+    ports:  
+      - 5432:5432
+    environment:  
+      POSTGRES_PASSWORD: Password123#
+      POSTGRES_DB: FoodDelivery  
+      POSTGRES_USER: postgres
+    networks:
+      - app
+    volumes:
+      - data:/var/lib/postgres/data
+  fooddeliveryapp:
+    image: ${DOCKER_REGISTRY-}fooddeliveryapp
+    ports:
+      - 8080:8080
+    networks:
+      - app
+    depends_on:
+      - postgresdb
+    build:
+      context: .
+      dockerfile: FoodDeliveryApp/Dockerfile

@@ -1,0 +1,10 @@
+﻿namespace FoodDeliveryApp.Registers
+{
+    public static class DomainRegister
+    {
+        public static void AddDomain(this IServiceCollection serviceCollection)
+        {
+            //serviceCollection.AddScoped<IFollowService, FollowService>();
+        }
+    }
+}
