@@ -1,9 +1,11 @@
-﻿using Infra.Mappings;
+﻿using Domain.Auth;
+using Infra.Mappings;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra
 {
-    public class FoodDeliveryDbContext : DbContext
+    public class FoodDeliveryDbContext : IdentityDbContext<AuthUser>
     {
         public FoodDeliveryDbContext() { }
         public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options) { }
@@ -12,6 +14,10 @@ namespace Infra
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AddressMapping());
+        }
+        public void Seed()
+        {
+
         }
     }
 }

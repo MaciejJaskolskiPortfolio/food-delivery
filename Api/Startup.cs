@@ -1,5 +1,12 @@
-﻿using FoodDeliveryApp.Registers;
+﻿using Domain.Auth;
+using FoodDeliveryApp.Registers;
+using HealthChecks.UI.Client;
 using Infra;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FoodDeliveryApp
 {
@@ -15,12 +22,12 @@ namespace FoodDeliveryApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddInfra(Configuration);
             services.AddEndpointsApiExplorer();
-            // services.AddMvcCore().AddApiExplorer();
+            services.AddMvcCore().AddApiExplorer();
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddDomain();
-            services.AddInfra(Configuration);
             //services.AddAutoMapper(typeof(BandMapper));
             //services.AddAutoMapper(typeof(AlbumMapper));
             //services.AddAutoMapper(typeof(TourMapper));
@@ -41,23 +48,27 @@ namespace FoodDeliveryApp
                 });
             });
 
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.SaveToken = true;
-            //        options.RequireHttpsMetadata = false;
-            //        options.TokenValidationParameters = new TokenValidationParameters()
-            //        {
-            //            ValidateIssuer = false,
-            //            ValidateAudience = false,
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
-            //        };
-            //    });
+            services.AddIdentity<AuthUser, IdentityRole>()
+                .AddEntityFrameworkStores<FoodDeliveryDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.SaveToken = true;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                    };
+                });
             services.AddMvc();
         }
         //, IApiVersionDescriptionProvider provider
@@ -74,6 +85,15 @@ namespace FoodDeliveryApp
             app.UseHttpsRedirection();
             app.UseDeveloperExceptionPage();
             app.UseCors("FoodApiCORS");
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                //endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                //{
+                //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                //});
+            });
         }
     }
 }
