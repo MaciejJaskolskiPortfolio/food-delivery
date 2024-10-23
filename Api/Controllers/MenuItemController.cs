@@ -22,6 +22,13 @@ namespace Api.Controllers
             return Ok();
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetMenuItemDetails(int id)
+        {
+            Log.Debug($"Get Menu Item Details id={id}");
+            return Ok();
+        }
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateMenuItem(int id)
         {

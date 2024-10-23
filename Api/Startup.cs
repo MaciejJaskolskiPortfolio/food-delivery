@@ -52,7 +52,7 @@ namespace FoodDeliveryApp
             Log.Logger = new LoggerConfiguration().CreateLogger();
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
+                .MinimumLevel.Debug()
                 .WriteTo.Console()
                 .WriteTo.File("log.txt",
                     rollingInterval: RollingInterval.Day,
