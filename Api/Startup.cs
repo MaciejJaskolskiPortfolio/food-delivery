@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 namespace FoodDeliveryApp
@@ -47,6 +48,17 @@ namespace FoodDeliveryApp
                     .AllowCredentials();
                 });
             });
+
+            Log.Logger = new LoggerConfiguration().CreateLogger();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .WriteTo.File("log.txt",
+                    rollingInterval: RollingInterval.Day,
+                    rollOnFileSizeLimit: true)
+                .CreateLogger();
+
 
             services.AddIdentity<AuthUser, IdentityRole>()
                 .AddEntityFrameworkStores<FoodDeliveryDbContext>()

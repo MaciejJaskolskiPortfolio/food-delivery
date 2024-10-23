@@ -14,6 +14,13 @@ namespace Infra
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            AddMappingConfiguration(modelBuilder);
+            AddSeeds(modelBuilder);
+        }
+
+        private void AddMappingConfiguration(ModelBuilder modelBuilder)
+        {
             modelBuilder.ApplyConfiguration(new AddressMapping());
             modelBuilder.ApplyConfiguration(new RestaurantMapping());
             modelBuilder.ApplyConfiguration(new MenuItemCategoryMapping());
@@ -24,7 +31,10 @@ namespace Infra
             modelBuilder.ApplyConfiguration(new OrderItemOptionMapping());
             modelBuilder.ApplyConfiguration(new ClientMapping());
             modelBuilder.ApplyConfiguration(new DeliveryDriverMapping());
+        }
 
+        private void AddSeeds(ModelBuilder modelBuilder)
+        {
             AddressSeed.AddAddresses(modelBuilder);
         }
     }
