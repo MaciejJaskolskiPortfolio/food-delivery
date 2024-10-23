@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Mappings
 {
-    public class AddressMapping : IEntityTypeConfiguration<Address>
+    public class DeliveryDriverMapping : IEntityTypeConfiguration<DeliveryDriver>
     {
-        public void Configure(EntityTypeBuilder<Address> builder)
+        public void Configure(EntityTypeBuilder<DeliveryDriver> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired();
 
-            builder.HasOne(x => x.Restaurant).WithOne(r => r.Address);
+
         }
     }
 }

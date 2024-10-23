@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(FoodDeliveryDbContext))]
-    [Migration("20241020084128_Auth")]
-    partial class Auth
+    [Migration("20241022143249_MenuItem")]
+    partial class MenuItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,13 +97,228 @@ namespace Infra.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId")
+                        .IsUnique();
+
+                    b.ToTable("Address");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 2,
+                            AdditionalInfo = "Generic Concrete Computer",
+                            ApartmentNumber = "5708",
+                            City = "South Guiseppeport",
+                            HouseNumber = "9998",
+                            PostalCode = "07443-0261",
+                            Street = "Breana Course"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AdditionalInfo = "Licensed Cotton Fish",
+                            ApartmentNumber = "133",
+                            City = "Eunamouth",
+                            HouseNumber = "24395",
+                            PostalCode = "18893",
+                            Street = "Jalyn Row"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ApartmentNumber = "7997",
+                            City = "New Nicholas",
+                            HouseNumber = "83673",
+                            PostalCode = "46187-1997",
+                            Street = "DuBuque Rapid"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ApartmentNumber = "180",
+                            City = "Reichertmouth",
+                            HouseNumber = "7777",
+                            PostalCode = "82272",
+                            Street = "Monahan Views"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ApartmentNumber = "683",
+                            City = "Kozeystad",
+                            HouseNumber = "8767",
+                            PostalCode = "31475",
+                            Street = "Bonnie Locks"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ApartmentNumber = "73844",
+                            City = "Maudeborough",
+                            HouseNumber = "99428",
+                            PostalCode = "16223-0267",
+                            Street = "Isidro Grove"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ApartmentNumber = "359",
+                            City = "Port Carole",
+                            HouseNumber = "736",
+                            PostalCode = "87101-5413",
+                            Street = "Helena Unions"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ApartmentNumber = "29632",
+                            City = "Kleinmouth",
+                            HouseNumber = "0084",
+                            PostalCode = "52809",
+                            Street = "Mills Place"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AdditionalInfo = "Avon",
+                            ApartmentNumber = "55704",
+                            City = "Spencerstad",
+                            HouseNumber = "8126",
+                            PostalCode = "44505-9330",
+                            Street = "Abagail Cape"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AdditionalInfo = "impactful",
+                            ApartmentNumber = "09335",
+                            City = "West Edisonstad",
+                            HouseNumber = "3807",
+                            PostalCode = "10826-6231",
+                            Street = "Rhett Island"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MenuItem");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItemCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.HasIndex("MenuItemId");
+
+                    b.ToTable("MenuItemCategory");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItemOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MenuItemCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuItemCategoryId");
+
+                    b.ToTable("MenuItemOption");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Restaurant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -238,6 +453,37 @@ namespace Infra.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Address", b =>
+                {
+                    b.HasOne("Domain.Entities.Restaurant", "Restaurant")
+                        .WithOne("Address")
+                        .HasForeignKey("Domain.Entities.Address", "RestaurantId");
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItemCategory", b =>
+                {
+                    b.HasOne("Domain.Entities.MenuItem", "MenuItem")
+                        .WithMany("MenuItemCategories")
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuItem");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItemOption", b =>
+                {
+                    b.HasOne("Domain.Entities.MenuItemCategory", "MenuItemCategory")
+                        .WithMany("MenuItemOptions")
+                        .HasForeignKey("MenuItemCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuItemCategory");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -286,6 +532,22 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItem", b =>
+                {
+                    b.Navigation("MenuItemCategories");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MenuItemCategory", b =>
+                {
+                    b.Navigation("MenuItemOptions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Restaurant", b =>
+                {
+                    b.Navigation("Address")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

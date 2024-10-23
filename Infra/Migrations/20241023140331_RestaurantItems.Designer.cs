@@ -3,6 +3,7 @@ using System;
 using Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(FoodDeliveryDbContext))]
-    partial class FoodDeliveryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241023140331_RestaurantItems")]
+    partial class RestaurantItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,142 +139,96 @@ namespace Infra.Migrations
                         new
                         {
                             Id = 2,
-                            ApartmentNumber = "133",
-                            City = "Trinitychester",
-                            HouseNumber = "2048",
-                            PostalCode = "41610",
-                            Street = "Euna Port"
+                            ApartmentNumber = "785",
+                            City = "West Emmaleefurt",
+                            HouseNumber = "979",
+                            PostalCode = "34389-4846",
+                            Street = "Herminia Overpass"
                         },
                         new
                         {
                             Id = 3,
-                            AdditionalInfo = "green",
-                            ApartmentNumber = "085",
-                            City = "North Dale",
-                            HouseNumber = "357",
-                            PostalCode = "28738-7172",
-                            Street = "Bette Mission"
+                            ApartmentNumber = "624",
+                            City = "Lake Lacey",
+                            HouseNumber = "54392",
+                            PostalCode = "07693",
+                            Street = "Alia Plain"
                         },
                         new
                         {
                             Id = 4,
-                            AdditionalInfo = "implement",
-                            ApartmentNumber = "49794",
-                            City = "Lockmanview",
-                            HouseNumber = "1710",
-                            PostalCode = "66821-5865",
-                            Street = "Fidel Route"
+                            ApartmentNumber = "1144",
+                            City = "Leonelmouth",
+                            HouseNumber = "418",
+                            PostalCode = "37539-3748",
+                            Street = "German Cove"
                         },
                         new
                         {
                             Id = 5,
-                            ApartmentNumber = "6111",
-                            City = "North Colemouth",
-                            HouseNumber = "535",
-                            PostalCode = "54983-2225",
-                            Street = "Clementine Port"
+                            ApartmentNumber = "61155",
+                            City = "Eileenshire",
+                            HouseNumber = "41901",
+                            PostalCode = "32018",
+                            Street = "Tyshawn Haven"
                         },
                         new
                         {
                             Id = 6,
-                            AdditionalInfo = "synergy",
-                            ApartmentNumber = "01092",
-                            City = "Monahanshire",
-                            HouseNumber = "06306",
-                            PostalCode = "53928",
-                            Street = "Berry Key"
+                            AdditionalInfo = "withdrawal",
+                            ApartmentNumber = "577",
+                            City = "Kelsishire",
+                            HouseNumber = "855",
+                            PostalCode = "38620",
+                            Street = "Hessel Road"
                         },
                         new
                         {
                             Id = 7,
-                            AdditionalInfo = "Netherlands Antilles",
-                            ApartmentNumber = "8159",
-                            City = "Isaacfort",
-                            HouseNumber = "6779",
-                            PostalCode = "54762-3370",
-                            Street = "Margarett Landing"
+                            AdditionalInfo = "Investment Account",
+                            ApartmentNumber = "038",
+                            City = "Hermistonburgh",
+                            HouseNumber = "31196",
+                            PostalCode = "65677",
+                            Street = "Ferne Canyon"
                         },
                         new
                         {
                             Id = 8,
-                            AdditionalInfo = "Steel",
-                            ApartmentNumber = "44208",
-                            City = "Port Kaitlynchester",
-                            HouseNumber = "096",
-                            PostalCode = "23585",
-                            Street = "Johnson Motorway"
+                            ApartmentNumber = "318",
+                            City = "Feilview",
+                            HouseNumber = "1381",
+                            PostalCode = "53563-4949",
+                            Street = "Libby Springs"
                         },
                         new
                         {
                             Id = 9,
-                            AdditionalInfo = "stable",
-                            ApartmentNumber = "317",
-                            City = "Lake Rasheedport",
-                            HouseNumber = "278",
-                            PostalCode = "50424",
-                            Street = "Donnelly Summit"
+                            AdditionalInfo = "Automotive",
+                            ApartmentNumber = "427",
+                            City = "East Penelope",
+                            HouseNumber = "04795",
+                            PostalCode = "92816",
+                            Street = "Mante Fork"
                         },
                         new
                         {
                             Id = 10,
-                            AdditionalInfo = "Argentina",
-                            ApartmentNumber = "3024",
-                            City = "New Rowenaview",
-                            HouseNumber = "946",
-                            PostalCode = "34961-7101",
-                            Street = "Norwood Way"
+                            ApartmentNumber = "37575",
+                            City = "Dickinsonbury",
+                            HouseNumber = "801",
+                            PostalCode = "55166",
+                            Street = "Jermain Loop"
                         },
                         new
                         {
                             Id = 11,
-                            ApartmentNumber = "0903",
-                            City = "Trantowburgh",
-                            HouseNumber = "921",
-                            PostalCode = "45820",
-                            Street = "Marquis Park"
+                            ApartmentNumber = "63807",
+                            City = "Gerholdside",
+                            HouseNumber = "661",
+                            PostalCode = "94607-8902",
+                            Street = "Buckridge Mountains"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Entities.Client", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Client");
-                });
-
-            modelBuilder.Entity("Domain.Entities.DeliveryDriver", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeliveryDriver");
                 });
 
             modelBuilder.Entity("Domain.Entities.MenuItem", b =>
@@ -352,12 +309,6 @@ namespace Infra.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DeliveryDriverId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -368,10 +319,6 @@ namespace Infra.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("DeliveryDriverId");
 
                     b.HasIndex("RestaurantId");
 
@@ -630,27 +577,11 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entities.Order", b =>
                 {
-                    b.HasOne("Domain.Entities.Client", "Client")
-                        .WithMany("Orders")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.DeliveryDriver", "DeliveryDriver")
-                        .WithMany("Orders")
-                        .HasForeignKey("DeliveryDriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Restaurant", "Restaurant")
                         .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("DeliveryDriver");
 
                     b.Navigation("Restaurant");
                 });
@@ -742,16 +673,6 @@ namespace Infra.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Client", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Domain.Entities.DeliveryDriver", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.MenuItem", b =>

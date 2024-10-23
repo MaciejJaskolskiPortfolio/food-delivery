@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infra.Migrations
 {
     [DbContext(typeof(FoodDeliveryDbContext))]
-    [Migration("20241020093150_Auth6")]
-    partial class Auth6
+    [Migration("20241020105851_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,13 +97,166 @@ namespace Infra.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdditionalInfo")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("ApartmentNumber")
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("character varying(6)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("character varying(12)");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RestaurantId")
+                        .IsUnique();
+
                     b.ToTable("Address");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ApartmentNumber = "6242",
+                            City = "Vandervortchester",
+                            HouseNumber = "1714",
+                            PostalCode = "76621",
+                            Street = "Kiehn Islands"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdditionalInfo = "users",
+                            ApartmentNumber = "68966",
+                            City = "Howeland",
+                            HouseNumber = "6436",
+                            PostalCode = "04448",
+                            Street = "Wilkinson Vista"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AdditionalInfo = "redundant",
+                            ApartmentNumber = "1053",
+                            City = "South Marcia",
+                            HouseNumber = "2792",
+                            PostalCode = "32556",
+                            Street = "Taya Bridge"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ApartmentNumber = "4329",
+                            City = "North Altaberg",
+                            HouseNumber = "9786",
+                            PostalCode = "75046",
+                            Street = "Adams Fort"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ApartmentNumber = "954",
+                            City = "Hoppehaven",
+                            HouseNumber = "884",
+                            PostalCode = "84099-5142",
+                            Street = "Zakary Forges"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AdditionalInfo = "Grocery & Beauty",
+                            ApartmentNumber = "91693",
+                            City = "Port Albertha",
+                            HouseNumber = "27780",
+                            PostalCode = "35156",
+                            Street = "Lilla Route"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AdditionalInfo = "implement",
+                            ApartmentNumber = "0314",
+                            City = "Whitneybury",
+                            HouseNumber = "59857",
+                            PostalCode = "99621-3705",
+                            Street = "Dare Pine"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AdditionalInfo = "Knoll",
+                            ApartmentNumber = "7677",
+                            City = "Lake Darionview",
+                            HouseNumber = "803",
+                            PostalCode = "92200-4650",
+                            Street = "Kaylee Passage"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AdditionalInfo = "actuating",
+                            ApartmentNumber = "719",
+                            City = "Danfort",
+                            HouseNumber = "470",
+                            PostalCode = "24558",
+                            Street = "Boyle Ports"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AdditionalInfo = "transparent",
+                            ApartmentNumber = "9166",
+                            City = "Rolfsonbury",
+                            HouseNumber = "37801",
+                            PostalCode = "77315",
+                            Street = "Krajcik Curve"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.Restaurant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -238,6 +391,15 @@ namespace Infra.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Address", b =>
+                {
+                    b.HasOne("Domain.Entities.Restaurant", "Restaurant")
+                        .WithOne("Address")
+                        .HasForeignKey("Domain.Entities.Address", "RestaurantId");
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -286,6 +448,12 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Restaurant", b =>
+                {
+                    b.Navigation("Address")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -30,7 +30,7 @@ namespace FoodDeliveryApp.Registers
             var context = serviceScope.ServiceProvider.GetRequiredService<FoodDeliveryDbContext>();
 
             context.Database.Migrate();
-            context.Seed();
+            //context.Seed();
         }
 
         private static void UseNpgsql(DbContextOptionsBuilder options, IConfiguration configuration)

@@ -1,17 +1,19 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace Infra.Mappings
 {
-    public class AddressMapping : IEntityTypeConfiguration<Address>
+    public class RestaurantMapping : IEntityTypeConfiguration<Restaurant>
     {
-        public void Configure(EntityTypeBuilder<Address> builder)
+        public void Configure(EntityTypeBuilder<Restaurant> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired();
 
-            builder.HasOne(x => x.Restaurant).WithOne(r => r.Address);
+            builder.HasOne(x => x.Address).WithOne(r => r.Restaurant);
         }
+
     }
 }
