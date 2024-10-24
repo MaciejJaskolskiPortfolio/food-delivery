@@ -32,10 +32,12 @@ namespace FoodDeliveryApp
             services.AddSwaggerGen();
             services.AddDomain();
 
+            services.AddAutoMapper(typeof(AddressMapper));
             services.AddAutoMapper(typeof(RestaurantMapper));
 
 
-            services.AddRequestTimeouts(options => {
+            services.AddRequestTimeouts(options =>
+            {
                 options.DefaultPolicy = new RequestTimeoutPolicy
                 {
                     Timeout = TimeSpan.FromMilliseconds(1000),
@@ -45,7 +47,8 @@ namespace FoodDeliveryApp
                 {
                     Timeout = TimeSpan.FromMilliseconds(1000),
                     TimeoutStatusCode = StatusCodes.Status503ServiceUnavailable,
-                    WriteTimeoutResponse = async (HttpContext context) => {
+                    WriteTimeoutResponse = async (HttpContext context) =>
+                    {
                         context.Response.ContentType = "text/plain";
                         await context.Response.WriteAsync("Timeout from MyPolicy2!");
                     }

@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Services;
+﻿using Domain.Dtos.Restaurant;
+using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
@@ -33,10 +34,11 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRestaurant([FromBody] object restaurantDto)
+        public async Task<IActionResult> CreateRestaurant([FromBody] RestaurantDTORequest restaurantDto)
         {
             Log.Debug($"Create Restaurant {JsonConvert.SerializeObject(restaurantDto)}");
-            return Created();
+            var result = await _service.Create(restaurantDto);
+            return StatusCode(result.Status, result);
         }
 
         [HttpPut("{id:int}")]

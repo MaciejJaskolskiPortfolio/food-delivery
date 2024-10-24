@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Dtos.Restaurant;
+using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
 using Newtonsoft.Json;
@@ -19,9 +20,22 @@ namespace Domain.Services
             _mapper = mapper;
         }
 
-        public Task<ApiResponse<RestaurantDTOResponse>> Create(RestaurantDTORequest restaurant)
+        public async Task<ApiResponse<RestaurantDTOResponse>> Create(RestaurantDTORequest restaurant)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var restaurantEntity = _mapper.Map<Restaurant>(restaurant);
+                var createdRestaurant = await _repository.Create(restaurantEntity);
+                Log.Debug($"Created restaurant id={createdRestaurant.Id}");
+
+                var restaurantResponse = _mapper.Map<RestaurantDTOResponse>(createdRestaurant);
+                return new ApiResponse<RestaurantDTOResponse> { Data = [restaurantResponse], Status = StatusCodes.Status201Created };
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Something went wrong while creating restaurant {JsonConvert.SerializeObject(restaurant)} {ex.Message} {ex.StackTrace}");
+                return new ApiResponse<RestaurantDTOResponse> { Data = [], Status = StatusCodes.Status500InternalServerError, StackTrace = ex.StackTrace, Message = ex.Message };
+            }
         }
 
         public Task<ApiResponse<string>> DeleteRestaurant(int id)

@@ -16,9 +16,11 @@ namespace Infra.Repository
             _set = context.Set<Restaurant>();
         }
 
-        public Task<Restaurant> Create(Restaurant restaurant)
+        public async Task<Restaurant> Create(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            await _set.AddAsync(restaurant);
+            await _context.SaveChangesAsync();
+            return restaurant;
         }
 
         public Task DeleteRestaurant(int id)
