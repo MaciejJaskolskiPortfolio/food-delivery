@@ -1,9 +1,11 @@
 ﻿using Domain.Auth;
+using Domain.Mappers;
 using FoodDeliveryApp.Registers;
 using HealthChecks.UI.Client;
 using Infra;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -29,14 +31,27 @@ namespace FoodDeliveryApp
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddDomain();
-            //services.AddAutoMapper(typeof(BandMapper));
-            //services.AddAutoMapper(typeof(AlbumMapper));
-            //services.AddAutoMapper(typeof(TourMapper));
-            //services.AddAutoMapper(typeof(ConcertMapper));
-            //services.AddAutoMapper(typeof(SongMapper));
-            //services.AddAutoMapper(typeof(SongMetadataMapper));
-            //services.AddAutoMapper(typeof(AlbumMetadataMapper));
-            //services.AddAutoMapper(typeof(NotificationMapper));
+
+            services.AddAutoMapper(typeof(RestaurantMapper));
+
+
+            services.AddRequestTimeouts(options => {
+                options.DefaultPolicy = new RequestTimeoutPolicy
+                {
+                    Timeout = TimeSpan.FromMilliseconds(1000),
+                    TimeoutStatusCode = 503
+                };
+                options.AddPolicy("TimeoutPolicy", new RequestTimeoutPolicy
+                {
+                    Timeout = TimeSpan.FromMilliseconds(1000),
+                    TimeoutStatusCode = StatusCodes.Status503ServiceUnavailable,
+                    WriteTimeoutResponse = async (HttpContext context) => {
+                        context.Response.ContentType = "text/plain";
+                        await context.Response.WriteAsync("Timeout from MyPolicy2!");
+                    }
+                });
+            });
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("FoodApiCORS", builder =>
@@ -100,7 +115,7 @@ namespace FoodDeliveryApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers().WithRequestTimeout("TimeoutPolicy");
                 //endpoints.MapHealthChecks("/health", new HealthCheckOptions
                 //{
                 //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse

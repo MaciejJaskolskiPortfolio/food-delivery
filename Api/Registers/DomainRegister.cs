@@ -8,6 +8,7 @@ namespace FoodDeliveryApp.Registers
         public static void AddDomain(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddScoped<IAuthService, AuthService>();
+            serviceCollection.AddScoped<IRestaurantService, RestaurantService>();
         }
     }
 }

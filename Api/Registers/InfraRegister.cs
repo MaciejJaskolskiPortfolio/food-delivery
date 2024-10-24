@@ -13,12 +13,7 @@ namespace FoodDeliveryApp.Registers
             serviceCollection.AddDbContext<FoodDeliveryDbContext>(x => UseNpgsql(x, configuration));
 
             serviceCollection.AddScoped<IAddressRepository, AddressRepository>();
-            //serviceCollection.AddScoped<IConcertRepository, ConcertRepository>();
-            //serviceCollection.AddScoped<ITourRepository, TourRepository>();
-            //serviceCollection.AddScoped<IAlbumManagerRepository, AlbumManagerRepository>();
-            //serviceCollection.AddScoped<INotificationRepository, NotificationRepository>();
-            //serviceCollection.AddScoped<IFollowRepository, FollowRepository>();
-
+            serviceCollection.AddScoped<IRestaurantRepository, RestaurantRepository>();
         }
 
         /**

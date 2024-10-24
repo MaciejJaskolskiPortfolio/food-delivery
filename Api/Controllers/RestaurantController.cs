@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
 
@@ -8,13 +9,27 @@ namespace Api.Controllers
     [Route("api/[controller]")]
     public class RestaurantController : ControllerBase
     {
-        public RestaurantController() { }
+        private readonly IRestaurantService _service;
+
+        public RestaurantController(IRestaurantService service)
+        {
+            _service = service;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetRestaurantsByCity([FromQuery] string cityName)
         {
             Log.Debug($"Get restaurants by city={cityName}");
-            return Ok();
+
+            var result = await _service.GetRestaurants(cityName);
+            return StatusCode(result.Status, result);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetRestaurantDetailsById(int id)
+        {
+            var result = await _service.GetRestaurantById(id);
+            return StatusCode(result.Status, result);
         }
 
         [HttpPost]

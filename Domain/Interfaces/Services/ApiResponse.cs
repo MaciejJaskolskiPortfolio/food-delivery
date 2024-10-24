@@ -1,10 +1,13 @@
-﻿namespace Domain.Interfaces.Services
+﻿using System.Diagnostics;
+
+namespace Domain.Interfaces.Services
 {
     public class ApiResponse<T>
     {
         public int Status { get; set; }
         public string Message { get; set; }
         public ICollection<T>? Data { get; set; } = new List<T>();
+        public string? StackTrace { get; set; }
 
         public ApiResponse() { }
     }
